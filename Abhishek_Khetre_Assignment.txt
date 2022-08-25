@@ -1,0 +1,66 @@
+--clients
+create table clients( 
+client_id number(4) primary key, 
+cname varchar(40) not null, 
+address varchar(30), 
+email varchar(30) unique, 
+phone number(10),
+business varchar(20) not null ); 
+
+insert into clients (client_id,cname,address,email,phone,business) values (1001,'acme utilities','noida','contact@acmeutil.com',9567880032,'manufacturing');
+insert into clients (client_id,cname,address,email,phone,business) values (1002,'trackon consultants','mumbai','consult@trackon.com',8734210090, 'consultant'), (1003,'moneysaver distributors','bangalore','save@moneysaver.com',7799886 655,'reseller');
+
+select * from clients; 
+
+--departments
+create table departments( 
+deptno number(2) primary key, 
+dname varchar (15) not null, 
+loc varchar(20) );
+
+insert into departments (deptno,dname,loc) values (10,'design','pune'); 
+insert into departments (deptno,dname,loc) values (20,'development','pune'); 
+insert into departments (deptno,dname,loc) values (40,'document','mumbai');
+
+select * from departments;
+
+--employees
+create table employees( 
+empno number(4) primary key, 
+ename varchar(20) not null, 
+job varchar(15), 
+salary number(7) check (salary > 0), 
+deptno number(2) references departments(deptno) ); 
+
+insert into employees (empno,ename,job,salary,deptno) values (7001,'sandeep','analyst',25000,10); 
+insert into employees (empno,ename,job,salary,deptno) values (7002,'rajesh','designer',30000,10); 
+insert into employees (empno,ename,job,salary,deptno) values (7003,'madhav','developer',40000,20);
+
+select * from employees; 
+
+--projects
+create table projects( project_id number(3) primary key, 
+descr varchar2(30) not null, 
+start_date date, 
+planned_end date date, 
+actual_end_date date, 
+budget number(10) check(budget > 0), 
+client_id number(4) references clients(client_id)); 
+
+insert into projects (project_id,descr,start_date,planned_end_date,act ual_end_date,budget,client_id) values (401,'inventory',to_date('01-apr-11','dd-mon-rr'),to_date('01-oct-11','dd-mon-rr'),to_date('31-oct-11','dd-mon-rr'),150000,1001);
+ insert into projects (project_id,descr,start_date,planned_end_date,act ual_end_date,budget,client_id) values (402,'accounting',to_date('01-aug-11','dd-mon-rr'),to_date('01-jan-12','dd-mon-rr'),null,500000,1002);
+
+select * from projects;
+
+-- empprojecttasks
+create table empprojecttasks(
+ project_id number(3) references projects(project_id), 
+empno number(4) references employees(empno), 
+start_date date, end_date date, task varchar(25) not null, 
+status varchar2(15) not null, 
+primary key(project_id,empno) ); 
+
+insert into empprojecttasks (project_id,empno,start_date,end_date,task,status) values (401,7001,to_date('01-apr-11','dd-mon-rr'),to_date('20-apr-11','dd-mon-rr'),'system analysis','completed'); 
+insert into empprojecttasks (project_id,empno,start_date,end_date,task,status) values (401,7002,to_date('21-apr-11','dd-mon-rr'),to_date('30-may-11','dd-mon-rr'),'system design','completed');
+
+select * from empprojecttasks;
