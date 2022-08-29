@@ -50,7 +50,9 @@ select ename,deptno,sal from emp where sal > 1500 and deptno in(10,30)
 
 select ename,job,sal from emp where job in('manager','analyst') and sal<>1000 and sal<>3000 and sal<>5000
 
-14.
+14. Display the name, salary and commission for all employees whose commission amount is greater than their salary increased by 10%.
+
+select ename, salary, comm from emp where comm > (salary*10/100)
 
 15. Display the name of all employees who have two Ls in their name and are in department 30 or their manager is 7782. 
 
